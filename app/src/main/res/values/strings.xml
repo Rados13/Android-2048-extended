@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">2048</string>
+    <string name="start">START GAME</string>
+    <string name="create">CREATE MAP</string>
+    <string name="choose">CHOOSE MAP</string>
+    <string name="holes">Holes</string>
+    <string name="undo">UNDO</string>
+    <string name="restart">RESTART</string>
+
+    <string-array name="mapsName">
+        <item>4x4</item>
+    </string-array>
+    <string-array name="highestScore">
+        <item>0</item>
+    </string-array>
+    <integer-array name="mapsSize">
+        <item>4</item>
+    </integer-array>
+    <string-array name="mapsStructure">
+        <item>111A111211511111</item>
+    </string-array>
+</resources>
