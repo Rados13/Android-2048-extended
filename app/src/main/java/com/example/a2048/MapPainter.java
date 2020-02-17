@@ -14,10 +14,10 @@ public class MapPainter extends Drawable {
     private final Paint greyBeginPaint;
     private final Paint brownPaint;
     private Paint darkPaint;
-    private String mapStructure;
+    private Integer[][] mapStructure;
     private Integer mapSize;
 
-    MapPainter(String mapStructure, int mapSize) {
+    MapPainter(Integer[][] mapStructure, int mapSize) {
         this.mapStructure = mapStructure;
         this.mapSize = mapSize;
         greyBeginPaint = new Paint();
@@ -39,38 +39,40 @@ public class MapPainter extends Drawable {
 
 
         canvas.drawRect(0, 0, oneRect * mapSize, oneRect * mapSize, brownPaint);
-
+        double gap = 0.05;
         Long valueOfRect;
 
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
-                if (mapStructure.charAt(i * mapSize + j) != '0') {
-                    valueOfRect = (long) ((int) mapStructure.charAt(i * mapSize + j) - '1');
+                if(mapStructure[i][j]==-2){
+                    canvas.drawRect((float) ((j + gap) * oneRect), (float) ((i + gap) * oneRect),
+                            (float) ((j + 1 - gap) * oneRect), (float) ((i + 1 - gap) * oneRect), darkPaint);
+
+                }
+                else if (mapStructure[i][j] >= 0) {
 
 
-                    canvas.drawRect((float) ((j + 0.1) * oneRect), (float) ((i + 0.1) * oneRect),
-                            (float) ((j + 0.9) * oneRect), (float) ((i + 0.9) * oneRect), greyBeginPaint);
+                    canvas.drawRect((float) ((j + gap) * oneRect), (float) ((i + gap) * oneRect),
+                            (float) ((j + 1 - gap) * oneRect), (float) ((i + 1 - gap) * oneRect), greyBeginPaint);
 
+                    if (mapStructure[i][j] > 0) {
 
-                    valueOfRect = Math.round(Math.pow(2, valueOfRect));
-
-                    if (valueOfRect > 1) {
-
+                        valueOfRect = Math.round(Math.pow(2, mapStructure[i][j]));
 
                         darkPaint.setTextAlign(Paint.Align.CENTER);
                         darkPaint.setTextSize(oneRect / 2);
                         float w = darkPaint.measureText(valueOfRect.toString());
                         float textSize = darkPaint.getTextSize();
 
-                        while(w > 0.8 * oneRect){
+                        while (w > 0.8 * oneRect) {
                             textSize = darkPaint.getTextSize();
                             darkPaint.setTextSize(0.9f * textSize);
                             w = darkPaint.measureText(valueOfRect.toString());
                         }
                         textSize = darkPaint.getTextSize();
                         canvas.drawText(valueOfRect.toString(),
-                                (float) ((j + 0.5) * oneRect ),
-                                (float) ((i + 0.5) * oneRect + textSize/4 ), darkPaint);
+                                (float) ((j + 0.5) * oneRect),
+                                (float) ((i + 0.5) * oneRect + textSize / 4), darkPaint);
                     }
                 }
             }

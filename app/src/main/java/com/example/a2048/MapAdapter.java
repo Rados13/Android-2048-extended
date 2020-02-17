@@ -57,7 +57,7 @@ public class MapAdapter extends BaseAdapter {
         nameTextView.setText(mapName);
         highestScoreTextView.setText(highestScore);
 
-        MapPainter map = new MapPainter(mapStructure,mapSize);
+        MapPainter map = new MapPainter(MapConverter.stringTo2DArray(mapStructure,mapSize),mapSize);
         mapStructurImageView.setImageDrawable(map);
         mapStructurImageView.setContentDescription(mapName);
 

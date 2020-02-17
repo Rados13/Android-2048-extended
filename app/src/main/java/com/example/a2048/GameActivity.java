@@ -3,6 +3,7 @@ package com.example.a2048;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GameActivity extends AppCompatActivity  {
+public class GameActivity extends AppCompatActivity {
 
     private MapObserver mapObserver;
 
@@ -35,7 +36,7 @@ public class GameActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 String mapStructure = res.getStringArray(R.array.mapsStructure)[index];
-                mapObserver = new MapObserver(mapStructure,mapSize, holes);
+                mapObserver = new MapObserver(mapStructure, mapSize, holes);
                 refresh();
             }
         });
@@ -44,39 +45,39 @@ public class GameActivity extends AppCompatActivity  {
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (previousStates.size() > 0) {
-                mapObserver.swipeRight();
-                refresh();
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "You can't undo more than 3 moves", Toast.LENGTH_SHORT).show();
-//                }
+                if (mapObserver.undo()) refresh();
+                else {
+                    Toast.makeText(getApplicationContext(), "You can't undo more than 3 moves", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
 
         View view = getWindow().getDecorView();
-        view.setOnTouchListener(new OnSwipeTouchListener(this){
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
             public void onSwipeRight() {
-                mapObserver.swipeRight();
+                Log.d("swipe", "swipe right");
+                mapObserver.swipe(SwipeDirection.RIGHT);
                 refresh();
             }
 
             @Override
             public void onSwipeLeft() {
-                mapObserver.swipeLeft();
+                Log.d("swipe", "swipe left");
+                mapObserver.swipe(SwipeDirection.LEFT);
                 refresh();
             }
 
             @Override
             public void onSwipeTop() {
-                mapObserver.swipeTop();
+                mapObserver.swipe(SwipeDirection.TOP);
                 refresh();
             }
 
             @Override
             public void onSwipeBottom() {
-                mapObserver.swipeBottom();
+                mapObserver.swipe(SwipeDirection.BOTTOM);
                 refresh();
             }
         });
@@ -84,8 +85,7 @@ public class GameActivity extends AppCompatActivity  {
 
 
     void refresh() {
-        Toast.makeText(getApplicationContext(), mapObserver.arrayToString(), Toast.LENGTH_SHORT).show();
-        MapPainter map = new MapPainter(mapObserver.arrayToString(), mapObserver.getMapSize());
+        MapPainter map = new MapPainter(mapObserver.getMapStatus(), mapObserver.getMapSize());
         ImageView img = (ImageView) findViewById(R.id.mapGameImageView);
         img.setImageDrawable(map);
     }
