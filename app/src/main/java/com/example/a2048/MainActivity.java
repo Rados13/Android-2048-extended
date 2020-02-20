@@ -15,12 +15,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button startButton = (Button) findViewById(R.id.startButton);
+        Button contButton = (Button) findViewById(R.id.continueButton);
         Button createButton = (Button) findViewById(R.id.createButton);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startIntent = new Intent(getApplicationContext(), ChooseMap.class);
+                Intent startIntent = new Intent(getApplicationContext(), ChooseMapActivity.class);
                 startActivity(startIntent);
             }
         });
@@ -29,8 +30,16 @@ public class MainActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent createIntent = new Intent(getApplicationContext(), CreateMap.class);
+                Intent createIntent = new Intent(getApplicationContext(), CreateMapActivity.class);
                 startActivity(createIntent);
+            }
+        });
+
+        contButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent continueIntent = new Intent(getApplicationContext(), ContinueActivity.class);
+                startActivity(continueIntent);
             }
         });
     }

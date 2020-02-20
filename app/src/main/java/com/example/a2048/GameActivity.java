@@ -14,6 +14,7 @@ public class GameActivity extends AppCompatActivity {
 
     private Map map;
     int index;
+    boolean save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,22 +23,23 @@ public class GameActivity extends AppCompatActivity {
 
         final Resources res = getResources();
         Intent in = getIntent();
+        final boolean holes;
+        save = in.getBooleanExtra("com.example.SAVE", false);
         index = in.getIntExtra("com.example.MAP_INDEX", -1);
-
-
-        final boolean holes = in.getBooleanExtra("com.example.HOLES", false);
-        String mapStructure = res.getStringArray(R.array.mapsStructure)[index];
-        final int mapSize = res.getIntArray(R.array.mapsSize)[index];
-        map = JSONParser.getMapToPlay(this, index, holes);
+        if (save) {
+            map = JSONParser.getSave(this, index);
+            holes = map.getHoles();
+        } else {
+            holes = in.getBooleanExtra("com.example.HOLES", false);
+            map = JSONParser.getMapToPlay(this, index, holes);
+        }
         refresh();
-
         // Buttons Listeners
 
         Button restartButton = findViewById(R.id.restartButton);
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 map = JSONParser.getMapToPlay(getApplicationContext(), index, holes);
                 refresh();
             }
@@ -61,27 +63,30 @@ public class GameActivity extends AppCompatActivity {
             public void onSwipeRight() {
                 map.swipe(SwipeDirection.RIGHT);
                 refresh();
+                JSONParser.makeSave(getApplicationContext(), index, map);
             }
 
             @Override
             public void onSwipeLeft() {
                 map.swipe(SwipeDirection.LEFT);
                 refresh();
+                JSONParser.makeSave(getApplicationContext(), index, map);
             }
 
             @Override
             public void onSwipeTop() {
                 map.swipe(SwipeDirection.TOP);
                 refresh();
+                JSONParser.makeSave(getApplicationContext(), index, map);
             }
 
             @Override
             public void onSwipeBottom() {
                 map.swipe(SwipeDirection.BOTTOM);
                 refresh();
+                JSONParser.makeSave(getApplicationContext(), index, map);
             }
         });
-
 
     }
 

@@ -1,5 +1,7 @@
 package com.example.a2048;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,15 @@ public class Map {
         previousStates = new ArrayList<String>();
         mapStatus = MapConverter.stringTo2DArray(mapStructure, mapSize);
         random();
+        this.holes = holes;
+    }
+    Map(String mapStructure,long score, int mapSize, boolean holes) {
+        Log.e("MapStrucuture",mapStructure);
+        this.score = score;
+        previousScores = new ArrayList<Long>();
+        this.mapSize = mapSize;
+        previousStates = new ArrayList<String>();
+        mapStatus = MapConverter.stringTo2DArray(mapStructure, mapSize);
         this.holes = holes;
     }
 
@@ -224,7 +235,11 @@ public class Map {
 
     }
 
-    public Long getScore() {
+    Long getScore() {
         return score;
+    }
+
+    boolean getHoles() {
+        return holes;
     }
 }

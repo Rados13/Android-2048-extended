@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChooseMap">
+    tools:context=".ChooseMapActivity">
 
     <TextView
-        android:id="@+id/ChooseMapText"
+        android:id="@+id/chooseMapText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ChooseMapText" />
+        app:layout_constraintTop_toBottomOf="@+id/chooseMapText" />
 
     <ListView
         android:id="@+id/mapListView"
@@ -41,5 +41,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/checkBox"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ChooseMapText" />
+        app:layout_constraintTop_toBottomOf="@+id/chooseMapText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

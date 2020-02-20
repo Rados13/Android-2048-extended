@@ -1,11 +1,13 @@
 package com.example.a2048;
 
-public class MapConverter {
+class MapConverter {
     static Integer[][] stringTo2DArray(String mapStructure, int mapSize) {
         Integer[][] mapStatus = new Integer[mapSize][mapSize];
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
-                mapStatus[i][j] = mapStructure.charAt(i * mapSize + j) - '1';
+                char letter = mapStructure.charAt(i * mapSize + j);
+                if (letter == 'X') mapStatus[i][j] = -2;
+                else mapStatus[i][j] = letter - '1';
             }
         }
         return mapStatus;
@@ -15,7 +17,7 @@ public class MapConverter {
         String result = "";
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
-                result += (char) (mapStatus[i][j] + '1');
+                result += (char) ((mapStatus[i][j] == -2) ? 'X' : (mapStatus[i][j] + '1'));
             }
         }
         return result;
