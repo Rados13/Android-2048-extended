@@ -2,6 +2,7 @@ package com.example.a2048;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -20,6 +21,7 @@ public class ContinueActivity extends AppCompatActivity {
         ListView gamesListView = (ListView) findViewById(R.id.continueListView);
 
         final ArrayList<ArrayList<String>> mapsStats = JSONParser.getSaves(this);
+        Log.e("Saves",mapsStats.toString());
         MapAdapter mapAdapter = new MapAdapter(this, mapsStats.get(0),
                 mapsStats.get(2), mapsStats.get(3), mapsStats.get(1),mapsStats.get(4));
 

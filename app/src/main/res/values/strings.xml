@@ -8,5 +8,7 @@
     <string name="undo">UNDO</string>
     <string name="restart">RESTART</string>
     <string name="save">SAVE</string>
+    <string name="size">Size of map</string>
+    <string name="name">Name of map</string>
 
 </resources>

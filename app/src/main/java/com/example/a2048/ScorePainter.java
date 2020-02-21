@@ -14,8 +14,8 @@ public class ScorePainter extends Drawable {
     private final Paint darkBrownPaint;
     private final Paint lightBrownPaint;
     private final Paint whitePaint;
-    String whichTextView;
-    String score;
+    private String whichTextView;
+    private String score;
 
     ScorePainter(String which, String score) {
         whichTextView = which;
@@ -56,7 +56,7 @@ public class ScorePainter extends Drawable {
                 0.95f*height + (height/2 - whiteTextSize)/2, whitePaint);
     }
 
-    void adjustSize(Paint color, float widthColor, float width, String text) {
+    private void adjustSize(Paint color, float widthColor, float width, String text) {
         while (widthColor > 0.8 * width) {
             float textSize = lightBrownPaint.getTextSize();
             color.setTextSize(0.9f * textSize);

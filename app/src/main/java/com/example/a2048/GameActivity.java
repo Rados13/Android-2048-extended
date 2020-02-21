@@ -21,7 +21,6 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        final Resources res = getResources();
         Intent in = getIntent();
         final boolean holes;
         save = in.getBooleanExtra("com.example.SAVE", false);
@@ -61,33 +60,30 @@ public class GameActivity extends AppCompatActivity {
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
             public void onSwipeRight() {
-                map.swipe(SwipeDirection.RIGHT);
-                refresh();
-                JSONParser.makeSave(getApplicationContext(), index, map);
+                onSwipe(SwipeDirection.RIGHT);
             }
 
             @Override
             public void onSwipeLeft() {
-                map.swipe(SwipeDirection.LEFT);
-                refresh();
-                JSONParser.makeSave(getApplicationContext(), index, map);
+                onSwipe(SwipeDirection.LEFT);
             }
 
             @Override
             public void onSwipeTop() {
-                map.swipe(SwipeDirection.TOP);
-                refresh();
-                JSONParser.makeSave(getApplicationContext(), index, map);
+                onSwipe(SwipeDirection.TOP);
             }
 
             @Override
             public void onSwipeBottom() {
-                map.swipe(SwipeDirection.BOTTOM);
+                onSwipe(SwipeDirection.BOTTOM);
+            }
+
+            void onSwipe(SwipeDirection direction) {
+                map.swipe(direction);
                 refresh();
-                JSONParser.makeSave(getApplicationContext(), index, map);
+                JSONParser.makeSave(getApplicationContext(), index, map,null);
             }
         });
-
     }
 
 

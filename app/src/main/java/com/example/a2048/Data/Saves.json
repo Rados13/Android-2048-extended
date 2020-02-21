@@ -1,11 +1,11 @@
 {
   "saves": [
     {
-      "mapsName": "4x4",
+      "mapName": "4x4",
       "holes": "false",
       "score": "0",
-      "mapsSize": 4,
-      "mapsStructure": "1111111111111111"
+      "mapSize": 4,
+      "mapStructure": "1111111111111111"
     }
   ]
 }

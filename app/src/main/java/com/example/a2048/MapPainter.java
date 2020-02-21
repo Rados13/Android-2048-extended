@@ -13,7 +13,7 @@ public class MapPainter extends Drawable {
 
     private final Paint greyBeginPaint;
     private final Paint brownPaint;
-    private Paint darkPaint;
+    private final Paint darkPaint;
     private Integer[][] mapStructure;
     private Integer mapSize;
 
@@ -34,7 +34,6 @@ public class MapPainter extends Drawable {
 
 
         int width = getBounds().width();
-        int height = getBounds().height();
         int oneRect = Math.round(width / mapSize);
 
 
@@ -44,12 +43,11 @@ public class MapPainter extends Drawable {
 
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
-                if(mapStructure[i][j]==-2){
+                if (mapStructure[i][j] == -2) {
                     canvas.drawRect((float) ((j + gap) * oneRect), (float) ((i + gap) * oneRect),
                             (float) ((j + 1 - gap) * oneRect), (float) ((i + 1 - gap) * oneRect), darkPaint);
 
-                }
-                else if (mapStructure[i][j] >= 0) {
+                } else if (mapStructure[i][j] >= 0) {
 
 
                     canvas.drawRect((float) ((j + gap) * oneRect), (float) ((i + gap) * oneRect),

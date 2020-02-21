@@ -21,6 +21,13 @@ class JSONParser {
     private static final String mapsFilePath = "/Data/Maps.json";
     private static final String savesFileName = "Saves.json";
     private static final String savesFilePath = "/Data/Saves.json";
+    private static final String structureField = "mapStructure";
+    private static final String nameField = "mapName";
+    private static final String highestScoreField = "highestScore";
+    private static final String scoreField = "score";
+    private static final String holesField = "holes";
+    private static final String sizeField = "mapSize";
+
 
     static ArrayList<ArrayList<String>> getMaps(Context ctx) {
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
@@ -32,10 +39,10 @@ class JSONParser {
             JSONArray maps = getFileJSONArray(ctx, mapsFileName);
             for (int i = 0; i < maps.length(); i++) {
                 JSONObject map = maps.getJSONObject(i);
-                result.get(0).add(map.getString("mapsName"));
-                result.get(1).add(map.getString("highestScore"));
-                result.get(2).add(Integer.valueOf(map.getInt("mapsSize")).toString());
-                result.get(3).add(map.getString("mapsStructure"));
+                result.get(0).add(map.getString(nameField));
+                result.get(1).add(map.getString(highestScoreField));
+                result.get(2).add(Integer.valueOf(map.getInt(sizeField)).toString());
+                result.get(3).add(map.getString(structureField));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -51,7 +58,7 @@ class JSONParser {
                 throw new ArrayIndexOutOfBoundsException();
             } else {
                 JSONObject map = maps.getJSONObject(index);
-                mapObject = new Map(map.getString("mapsStructure"), map.getInt("mapsSize"), holes);
+                mapObject = new Map(map.getString(structureField), map.getInt(sizeField), holes);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -105,10 +112,10 @@ class JSONParser {
                 writer.append("{\n" +
                         "  \"maps\": [\n" +
                         "    {\n" +
-                        "      \"mapsName\": \"4x4\",\n" +
+                        "      \"mapName\": \"4x4\",\n" +
                         "      \"highestScore\": \"0\",\n" +
-                        "      \"mapsSize\": 4,\n" +
-                        "      \"mapsStructure\": \"1111111111111111\"\n" +
+                        "      \"mapSize\": 4,\n" +
+                        "      \"mapStructure\": \"1111111111111111\"\n" +
                         "    }\n" +
                         "  ]\n" +
                         "}");
@@ -120,7 +127,7 @@ class JSONParser {
                         "      \"holes\": false,\n" +
                         "      \"score\": \"0\",\n" +
                         "      \"mapSize\": 4,\n" +
-                        "      \"mapStructure\": \"1111111111111111\"\n" +
+                        "      \"mapStructure\": \"1111112111111111\"\n" +
                         "    }\n" +
                         "  ]\n" + "}");
             }
@@ -142,7 +149,7 @@ class JSONParser {
                 throw new ArrayIndexOutOfBoundsException();
             } else {
                 JSONObject map = maps.getJSONObject(index);
-                return Long.valueOf(map.get("highestScore").toString());
+                return Long.valueOf(map.get(highestScoreField).toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -157,8 +164,8 @@ class JSONParser {
                 throw new ArrayIndexOutOfBoundsException();
             } else {
                 JSONObject map = maps.getJSONObject(index);
-                map.remove("highestScore");
-                map.put("highestScore", score.toString());
+                map.remove(highestScoreField);
+                map.put(highestScoreField, score.toString());
                 FileWriter file = new FileWriter(ctx.getFilesDir() + mapsFilePath);
                 file.write("{\n" + "\"maps\":" + maps.toString() + "}");
                 file.flush();
@@ -181,11 +188,11 @@ class JSONParser {
             JSONArray maps = getFileJSONArray(ctx, savesFileName);
             for (int i = 0; i < maps.length(); i++) {
                 JSONObject map = maps.getJSONObject(i);
-                result.get(0).add(map.getString("mapName"));
-                result.get(1).add(map.getString("score"));
-                result.get(2).add(Integer.valueOf(map.getInt("mapSize")).toString());
-                result.get(3).add(map.getString("mapStructure"));
-                result.get(4).add(Boolean.toString(map.getBoolean("holes")));
+                result.get(0).add(map.getString(nameField));
+                result.get(1).add(map.getString(scoreField));
+                result.get(2).add(Integer.valueOf(map.getInt(sizeField)).toString());
+                result.get(3).add(map.getString(structureField));
+                result.get(4).add(Boolean.toString(map.getBoolean(holesField)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -201,41 +208,72 @@ class JSONParser {
                 throw new ArrayIndexOutOfBoundsException();
             } else {
                 JSONObject map = maps.getJSONObject(index);
-                resultMap = new Map(map.getString("mapStructure"),
-                        Long.valueOf(map.getString("score")), map.getInt("mapSize"),
-                        map.getBoolean("holes"));
+                resultMap = new Map(map.getString(structureField),
+                        Long.valueOf(map.getString(scoreField)), map.getInt(sizeField),
+                        map.getBoolean(holesField));
             }
         } catch (JSONException e) {
-            Log.e("Login activity",e.toString());
+            Log.e("Login activity", e.toString());
             e.printStackTrace();
         }
         return resultMap;
 
     }
 
-    static void makeSave(Context ctx, int index, Map mapToSave) {
+    static void makeSave(Context ctx, int index, Map mapToSave, String name) {
         try {
             JSONArray maps = getFileJSONArray(ctx, savesFileName);
-            if (index > maps.length()) {
+            JSONObject map;
+            if (index == maps.length()) {
+                map = new JSONObject();
+                map.put(nameField, name);
+                map.put(sizeField, mapToSave.getMapSize());
+                maps.put(map);
+            } else if (index > maps.length()) {
                 throw new ArrayIndexOutOfBoundsException();
             } else {
-                JSONObject map = maps.getJSONObject(index);
-                map.remove("holes");
-                map.put("holes", mapToSave.getHoles());
-                map.remove("score");
-                map.put("score", mapToSave.getScore());
-                map.remove("mapStructure");
-                map.put("mapStructure", MapConverter.arrayToString(mapToSave.getMapStatus(), mapToSave.getMapSize()));
-                FileWriter file = new FileWriter(ctx.getFilesDir() + savesFilePath);
-                Log.e("Maps-stats",maps.toString());
-                file.write("{\n" + "\"saves\":" + maps.toString() + "}");
-                file.flush();
+                map = maps.getJSONObject(index);
+                map.remove(holesField);
+                map.remove(scoreField);
+                map.remove(structureField);
             }
+            map.put(holesField, mapToSave.getHoles());
+            map.put(scoreField, Long.toString(mapToSave.getScore()));
+            map.put(structureField, MapConverter.arrayToString(mapToSave.getMapStatus(), mapToSave.getMapSize()));
+            FileWriter file = new FileWriter(ctx.getFilesDir() + savesFilePath);
+            file.write("{\n" + "\"saves\":" + maps.toString() + "}");
+            file.flush();
         } catch (JSONException e) {
+            Log.e("Login activity", e.toString());
             e.printStackTrace();
         } catch (IOException e) {
+            Log.e("Login activity", e.toString());
             e.printStackTrace();
         }
 
     }
+
+    static void saveMap(Context ctx, String name, int size, String mapStructure) {
+        try {
+            JSONArray maps = getFileJSONArray(ctx, mapsFileName);
+            JSONObject map = new JSONObject();
+            map.put(nameField, name);
+            map.put(structureField, mapStructure);
+            map.put(highestScoreField, "0");
+            map.put(sizeField, size);
+            maps.put(map);
+            makeSave(ctx, maps.length() - 1, new Map(mapStructure, size, false), name);
+            FileWriter file = new FileWriter(ctx.getFilesDir() + mapsFilePath);
+            file.write("{\n" + "\"maps\":" + maps.toString() + "}");
+            file.flush();
+        } catch (JSONException e) {
+            Log.e("Login activity", e.toString());
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("Login activity", e.toString());
+            e.printStackTrace();
+        }
+    }
+
+
 }
