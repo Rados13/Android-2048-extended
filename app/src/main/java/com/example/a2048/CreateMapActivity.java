@@ -1,8 +1,8 @@
 package com.example.a2048;
 
+import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -70,7 +70,9 @@ public class CreateMapActivity extends AppCompatActivity {
                 if (!MapValidation.mapValid(mapStructure, size)) {
                     Toast.makeText(getApplicationContext(), "Map is not valid!", Toast.LENGTH_SHORT).show();
                 } else {
-                    JSONParser.saveMap(getApplicationContext(), nameView.getText().toString(), size, mapStructure);
+                    JSONWriter.saveMap(getApplicationContext(), nameView.getText().toString(), size, mapStructure);
+                    Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(mainIntent);
                 }
             }
         });

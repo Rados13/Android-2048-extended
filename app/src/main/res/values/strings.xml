@@ -3,6 +3,7 @@
     <string name="start">START GAME</string>
     <string name="cont">CONTINUE GAME</string>
     <string name="create">CREATE MAP</string>
+    <string name="delete">DELETE MAP</string>
     <string name="choose">CHOOSE MAP</string>
     <string name="holes">Holes</string>
     <string name="undo">UNDO</string>

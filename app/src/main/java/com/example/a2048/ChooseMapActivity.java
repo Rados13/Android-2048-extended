@@ -22,7 +22,8 @@ public class ChooseMapActivity extends AppCompatActivity {
 
         mapListView = (ListView) findViewById(R.id.mapListView);
 
-        ArrayList<ArrayList<String>> mapsStats = JSONParser.getMaps(this);
+        ArrayList<ArrayList<String>> mapsStats = JSONReader.getMaps(this);
+
 
         MapAdapter mapAdapter = new MapAdapter(this, mapsStats.get(0),
                 mapsStats.get(2), mapsStats.get(3), mapsStats.get(1));
@@ -32,12 +33,12 @@ public class ChooseMapActivity extends AppCompatActivity {
         mapListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent startGame = new Intent(getApplicationContext(), GameActivity.class);
-
+                Intent startGameIntent;
+                startGameIntent = new Intent(getApplicationContext(), GameActivity.class);
                 CheckBox holesActivate = findViewById(R.id.checkBox);
-                startGame.putExtra("com.example.HOLES", holesActivate.isChecked());
-                startGame.putExtra("com.example.MAP_INDEX", position);
-                startActivity(startGame);
+                startGameIntent.putExtra("com.example.HOLES", holesActivate.isChecked());
+                startGameIntent.putExtra("com.example.MAP_INDEX", position);
+                startActivity(startGameIntent);
             }
         });
     }

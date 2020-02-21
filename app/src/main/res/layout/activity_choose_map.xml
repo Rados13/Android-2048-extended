@@ -21,25 +21,25 @@
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="12dp"
         android:text="@string/holes"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseMapText" />
 
     <ListView
         android:id="@+id/mapListView"
-        android:layout_width="300dp"
-        android:layout_height="500dp"
+        android:layout_width="380dp"
+        android:layout_height="450dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseMapText" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 </androidx.constraintlayout.widget.ConstraintLayout>

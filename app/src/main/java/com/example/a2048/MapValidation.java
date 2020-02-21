@@ -39,9 +39,9 @@ public class MapValidation {
         int secondRepresent = getRepresent(map, j);
         if (firstRepresent == secondRepresent) return;
         else if (firstRepresent < secondRepresent) {
-            map[j] = firstRepresent;
+            map[secondRepresent] = firstRepresent;
         } else {
-            map[i] = secondRepresent;
+            map[firstRepresent] = secondRepresent;
         }
     }
 
@@ -53,4 +53,3 @@ public class MapValidation {
         }
     }
 }
-

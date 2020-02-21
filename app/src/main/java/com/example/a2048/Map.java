@@ -3,6 +3,7 @@ package com.example.a2048;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Map {
@@ -23,8 +24,9 @@ public class Map {
         random();
         this.holes = holes;
     }
-    Map(String mapStructure,long score, int mapSize, boolean holes) {
-        Log.e("MapStrucuture",mapStructure);
+
+    Map(String mapStructure, long score, int mapSize, boolean holes) {
+        Log.e("MapStrucuture", mapStructure);
         this.score = score;
         previousScores = new ArrayList<Long>();
         this.mapSize = mapSize;
@@ -48,7 +50,6 @@ public class Map {
     void swipe(SwipeDirection direction) {
         previousStates.add(MapConverter.arrayToString(mapStatus, mapSize));
         previousScores.add(score);
-        if (previousStates.size() > 3) previousStates.remove(0);
         switch (direction) {
             case RIGHT:
                 swipeRight();
@@ -63,7 +64,12 @@ public class Map {
                 swipeBottom();
                 break;
         }
-        random();
+        if(!Arrays.deepEquals(MapConverter.stringTo2DArray(previousStates.get(previousStates.size() - 1), mapSize), mapStatus)){
+            if (previousStates.size() > 3) previousStates.remove(0);
+            random();
+        }else{
+            previousStates.remove(previousStates.size()-1);
+        }
     }
 
     void swipeTop() {
@@ -97,6 +103,7 @@ public class Map {
                 }
             }
         }
+
     }
 
     void swipeBottom() {
@@ -196,8 +203,8 @@ public class Map {
         else {
             mapStatus = MapConverter.stringTo2DArray(previousStates.get(previousStates.size() - 1), mapSize);
             previousStates.remove(previousStates.size() - 1);
-            score = previousScores.get(previousScores.size()-1);
-            previousScores.remove(previousScores.size()-1);
+            score = previousScores.get(previousScores.size() - 1);
+            previousScores.remove(previousScores.size() - 1);
             return true;
         }
     }
@@ -214,7 +221,7 @@ public class Map {
 
         int idx;
         Integer[] position;
-        if (holes && Math.random() * 10 > 7 && emptyPlaces.size() < mapSize*mapSize) {
+        if (holes && Math.random() * 10 > 7 && emptyPlaces.size() < mapSize * mapSize) {
             idx = (int) Math.round(Math.random() * emptyPlaces.size());
             position = emptyPlaces.get(idx);
             mapStatus[position[0]][position[1]] = -2;

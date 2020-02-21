@@ -21,7 +21,7 @@ public class MapAdapter extends BaseAdapter {
     private ArrayList<String> holes;
 
     public MapAdapter(Context c, ArrayList<String> names, ArrayList<String> sizes,
-                     ArrayList<String> structures, ArrayList<String> scores) {
+                      ArrayList<String> structures, ArrayList<String> scores) {
         mapsName = names;
         mapsSize = sizes;
         mapsStructure = structures;
@@ -29,6 +29,7 @@ public class MapAdapter extends BaseAdapter {
         holes = null;
         mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     public MapAdapter(Context c, ArrayList<String> names, ArrayList<String> sizes,
                       ArrayList<String> structures, ArrayList<String> scores, ArrayList<String> holesArray) {
         mapsName = names;
@@ -38,7 +39,6 @@ public class MapAdapter extends BaseAdapter {
         holes = holesArray;
         mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
 
 
     @Override
@@ -65,7 +65,7 @@ public class MapAdapter extends BaseAdapter {
         TextView highestScoreTextView = (TextView) v.findViewById(R.id.highestScoreTextView);
         TextView holesTextView = (TextView) v.findViewById(R.id.holesDetailsTextView);
         String scoreString;
-        if (parent.getId() == R.id.continueListView) {
+        if (parent.getId() == R.id.continueListView && holes != null) {
             String holesText = "Holes:\n" + holes.get(position);
             holesTextView.setText(holesText);
             scoreString = "Score:\n";
@@ -81,7 +81,8 @@ public class MapAdapter extends BaseAdapter {
         nameTextView.setText(mapName);
         highestScoreTextView.setText(scoreString);
 
-        MapPainter map = new MapPainter(MapConverter.stringTo2DArray(mapStructure, mapSize), mapSize);
+        MapGamePainter map = new MapGamePainter(MapConverter.stringTo2DArray(mapStructure, mapSize),
+                mapSize);
         mapStructurImageView.setImageDrawable(map);
         mapStructurImageView.setContentDescription(mapName);
 

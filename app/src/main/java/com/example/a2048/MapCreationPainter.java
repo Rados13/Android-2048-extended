@@ -75,7 +75,7 @@ public class MapCreationPainter extends Drawable {
         int oneRect = Math.round(width / mapSize);
         int i = (int) (point.y / oneRect);
         int j = (int) (point.x / oneRect);
-        mapStructure[i][j] = mapStructure[i][j] == 1 ? 0 : -1;
+        mapStructure[i][j] = mapStructure[i][j] == 0 ? -1 : 0;
         return MapConverter.arrayToString(mapStructure,mapSize);
     }
 }

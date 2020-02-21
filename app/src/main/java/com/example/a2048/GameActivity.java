@@ -1,9 +1,9 @@
 package com.example.a2048;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -15,6 +15,8 @@ public class GameActivity extends AppCompatActivity {
     private Map map;
     int index;
     boolean save;
+    MapGamePainter mapPainter;
+    Animation anim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +28,16 @@ public class GameActivity extends AppCompatActivity {
         save = in.getBooleanExtra("com.example.SAVE", false);
         index = in.getIntExtra("com.example.MAP_INDEX", -1);
         if (save) {
-            map = JSONParser.getSave(this, index);
+            map = JSONReader.getSave(this, index);
             holes = map.getHoles();
         } else {
             holes = in.getBooleanExtra("com.example.HOLES", false);
-            map = JSONParser.getMapToPlay(this, index, holes);
+            map = JSONReader.getMapToPlay(this, index, holes);
         }
+
+
+        ImageView img = (ImageView) findViewById(R.id.mapGameImageView);
+        mapPainter = new MapGamePainter(this.map.getMapStatus(), this.map.getMapSize());
         refresh();
         // Buttons Listeners
 
@@ -39,7 +45,7 @@ public class GameActivity extends AppCompatActivity {
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                map = JSONParser.getMapToPlay(getApplicationContext(), index, holes);
+                map = JSONReader.getMapToPlay(getApplicationContext(), index, holes);
                 refresh();
             }
         });
@@ -81,21 +87,20 @@ public class GameActivity extends AppCompatActivity {
             void onSwipe(SwipeDirection direction) {
                 map.swipe(direction);
                 refresh();
-                JSONParser.makeSave(getApplicationContext(), index, map,null);
+                JSONWriter.makeSave(getApplicationContext(), index, map, null);
             }
         });
     }
 
-
     void refresh() {
-        final Resources res = getResources();
 
-        MapPainter map = new MapPainter(this.map.getMapStatus(), this.map.getMapSize());
-        ImageView img = (ImageView) findViewById(R.id.mapGameImageView);
-        img.setImageDrawable(map);
+
+        ImageView img = findViewById(R.id.mapGameImageView);
+        mapPainter = new MapGamePainter(map.getMapStatus(),map.getMapSize());
+        img.setImageDrawable(mapPainter);
 
         Long scoreValue = this.map.getScore();
-        Long highestScoreValue = JSONParser.getMapHighestScore(this, index);
+        Long highestScoreValue = JSONReader.getMapHighestScore(this, index);
 
         ScorePainter score = new ScorePainter("SCORE", scoreValue.toString());
         ImageView scoreImageView = (ImageView) findViewById(R.id.scoreImageView);
@@ -105,7 +110,7 @@ public class GameActivity extends AppCompatActivity {
         if (scoreValue > highestScoreValue) {
 
             highestScore = new ScorePainter("HIGH SCORE", scoreValue.toString());
-            JSONParser.saveScore(this, index, scoreValue);
+            JSONWriter.saveScore(this, index, scoreValue);
         } else {
             highestScore = new ScorePainter("HIGH SCORE", highestScoreValue.toString());
         }

@@ -9,17 +9,21 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class MapPainter extends Drawable {
+public class MapGamePainter extends Drawable {
 
-    private final Paint greyBeginPaint;
-    private final Paint brownPaint;
-    private final Paint darkPaint;
+    private Paint greyBeginPaint;
+    private Paint brownPaint;
+    private Paint darkPaint;
     private Integer[][] mapStructure;
     private Integer mapSize;
 
-    MapPainter(Integer[][] mapStructure, int mapSize) {
+    MapGamePainter(Integer[][] mapStructure, int mapSize) {
         this.mapStructure = mapStructure;
         this.mapSize = mapSize;
+        startSet();
+    }
+
+    private void startSet() {
         greyBeginPaint = new Paint();
         brownPaint = new Paint();
         darkPaint = new Paint();
@@ -27,7 +31,6 @@ public class MapPainter extends Drawable {
         brownPaint.setARGB(255, 96, 96, 96);
         darkPaint.setARGB(255, 0, 0, 0);
     }
-
 
     @Override
     public void draw(@NonNull Canvas canvas) {
@@ -37,12 +40,13 @@ public class MapPainter extends Drawable {
         int oneRect = Math.round(width / mapSize);
 
 
-        canvas.drawRect(0, 0, oneRect * mapSize, oneRect * mapSize, brownPaint);
         double gap = 0.05;
         Long valueOfRect;
 
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
+                if (mapStructure[i][j] != -1)
+                    canvas.drawRect(j * oneRect, i * oneRect, (j + 1) * oneRect, (i + 1) * oneRect, brownPaint);
                 if (mapStructure[i][j] == -2) {
                     canvas.drawRect((float) ((j + gap) * oneRect), (float) ((i + gap) * oneRect),
                             (float) ((j + 1 - gap) * oneRect), (float) ((i + 1 - gap) * oneRect), darkPaint);
@@ -50,8 +54,12 @@ public class MapPainter extends Drawable {
                 } else if (mapStructure[i][j] >= 0) {
 
 
-                    canvas.drawRect((float) ((j + gap) * oneRect), (float) ((i + gap) * oneRect),
-                            (float) ((j + 1 - gap) * oneRect), (float) ((i + 1 - gap) * oneRect), greyBeginPaint);
+                    canvas.drawRect((float) ((j + gap) * oneRect),
+                            (float) ((i + gap) * oneRect),
+                            (float) ((j + 1 - gap) * oneRect),
+                            (float) ((i + 1 - gap) * oneRect),
+                            greyBeginPaint);
+
 
                     if (mapStructure[i][j] > 0) {
 
@@ -69,8 +77,9 @@ public class MapPainter extends Drawable {
                         }
                         textSize = darkPaint.getTextSize();
                         canvas.drawText(valueOfRect.toString(),
-                                (float) ((j + 0.5) * oneRect),
-                                (float) ((i + 0.5) * oneRect + textSize / 4), darkPaint);
+                                (float) (((j + 0.5) * oneRect)),
+                                (float) ((i + 0.5) * oneRect + textSize / 4),
+                                darkPaint);
                     }
                 }
             }
@@ -91,4 +100,10 @@ public class MapPainter extends Drawable {
     public int getOpacity() {
         return PixelFormat.OPAQUE;
     }
+
+    Integer[][] getMap() {
+        return mapStructure;
+    }
+
+
 }
